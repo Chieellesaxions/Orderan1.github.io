@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buat Kamu 💗</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Courier New', monospace;
+      background: #ffc8d6;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      color: #ff5b8a;
+      opacity: 0.55;
+      animation: float 7s linear infinite;
+      font-size: 18px;
+    }
+
+    @keyframes float {
+      from { transform: translateY(110vh) rotate(0deg); }
+      to { transform: translateY(-15vh) rotate(360deg); }
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: min(88vw, 430px);
+      min-height: 270px;
+      background: white;
+      border: 4px solid #222;
+      border-radius: 24px;
+      box-shadow: 12px 14px 0 #191919;
+      padding: 34px 24px;
+      text-align: center;
+      animation: pop .35s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .small-title {
+      color: #777;
+      font-weight: 800;
+      margin-bottom: 22px;
+      font-size: 16px;
+    }
+
+    h1, h2, p { margin: 0; }
+
+    h1 {
+      font-family: Arial, sans-serif;
+      font-size: 25px;
+      line-height: 1.25;
+      margin-bottom: 28px;
+    }
+
+    p {
+      font-family: Arial, sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 25px;
+    }
+
+    .typing {
+      min-height: 86px;
+      font-family: Arial, sans-serif;
+      font-size: 21px;
+      font-weight: 800;
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      border: 4px solid #222;
+      border-radius: 14px;
+      padding: 15px 18px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 6px 7px 0 #191919;
+      transition: .12s;
+    }
+
+    button:active {
+      transform: translate(4px, 4px);
+      box-shadow: 2px 3px 0 #191919;
+    }
+
+    .pink { background: #ff2c68; color: white; }
+    .blue { background: #9feaff; color: #222; }
+    .green { background: #22d56d; color: white; }
+    .white { background: white; color: #222; }
+    .cyan { background: #18e4d2; color: #111; }
+    .purple { background: #b980ff; color: white; }
+
+    .letters {
+      display: grid;
+      grid-template-columns: repeat(3, 68px);
+      gap: 14px;
+      justify-content: center;
+      margin: 20px 0 24px;
+    }
+
+    .letter {
+      width: 68px;
+      height: 60px;
+      border: 4px solid #222;
+      border-radius: 12px;
+      background: white;
+      font-size: 26px;
+      font-family: Arial, sans-serif;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 4px 5px 0 #191919;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .answer {
+      min-height: 40px;
+      font-family: Arial, sans-serif;
+      font-size: 22px;
+      letter-spacing: 4px;
+      font-weight: 900;
+      color: #ff2c68;
+      margin-bottom: 8px;
+    }
+
+    .envelope-scene {
+      padding: 14px 0 2px;
+      cursor: pointer;
+    }
+
+    .envelope-box {
+      width: 250px;
+      height: 170px;
+      margin: 8px auto 24px;
+      position: relative;
+      perspective: 900px;
+      animation: wiggle 1.8s ease-in-out infinite;
+    }
+
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-1deg); }
+      50% { transform: rotate(1.5deg); }
+    }
+
+    .letter-paper {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      top: 42px;
+      height: 105px;
+      background: #fff;
+      border: 4px solid #222;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      z-index: 1;
+      transition: transform .9s ease, top .9s ease;
+    }
+
+    .envelope-box.open .letter-paper {
+      top: -52px;
+      transform: translateY(-6px) scale(1.04);
+    }
+
+    .envelope-back,
+    .envelope-front {
+      position: absolute;
+      inset: 0;
+      border: 4px solid #222;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 7px 9px 0 #191919;
+    }
+
+    .envelope-back { z-index: 0; }
+
+    .envelope-flap {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 88px;
+      background: #fff;
+      border: 4px solid #222;
+      border-bottom: 0;
+      border-radius: 12px 12px 0 0;
+      transform-origin: top;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      z-index: 4;
+      transition: transform .85s ease;
+    }
+
+    .envelope-box.open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 0;
+    }
+
+    .envelope-front {
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .envelope-front::before,
+    .envelope-front::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      width: 52%;
+      height: 100%;
+      background: white;
+      border-top: 4px solid #222;
+    }
+
+    .envelope-front::before {
+      left: -4px;
+      transform: skewY(35deg);
+      transform-origin: bottom left;
+    }
+
+    .envelope-front::after {
+      right: -4px;
+      transform: skewY(-35deg);
+      transform-origin: bottom right;
+    }
+
+    .bear {
+      position: absolute;
+      right: -35px;
+      top: -50px;
+      width: 90px;
+      height: 112px;
+      background: #9d6674;
+      border: 4px solid #222;
+      border-radius: 45px 45px 28px 28px;
+      z-index: 6;
+      animation: peek 1.5s ease-in-out infinite;
+    }
+
+    @keyframes peek {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .bear::before, .bear::after {
+      content: '';
+      position: absolute;
+      top: -18px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #9d6674;
+      border: 4px solid #222;
+    }
+    .bear::before { left: -10px; }
+    .bear::after { right: -10px; }
+    .face { position: absolute; inset: 22px 0 0; font-size: 28px; }
+
+    input {
+      width: 100%;
+      border: 4px solid #222;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 12px 0;
+      outline: none;
+    }
+
+    .photo-frame {
+      width: 185px;
+      height: 185px;
+      margin: 0 auto 22px;
+      border: 4px solid #222;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #ffe6ee, #ffd1df);
+      box-shadow: 7px 8px 0 #191919;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 58px;
+      overflow: hidden;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .reasons {
+      text-align: left;
+      font-family: Arial, sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.6;
+      margin: 0 0 18px 10px;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 8px;
+      height: 14px;
+      top: -20px;
+      animation: fall 2.8s linear forwards;
+      z-index: 5;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(720deg); }
+    }
+
+    .hug {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(.2);
+      font-size: 78px;
+      z-index: 20;
+      animation: hugPop 1.2s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes hugPop {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+      45% { opacity: 1; transform: translate(-50%, -50%) scale(1.25); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.7); }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 100px;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      z-index: 10;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+  <main class="card" id="app"></main>
+  <div class="toast" id="toast">Jangan pilih yang itu 😝</div>
+
+  <script>
+    // GANTI BAGIAN INI SESUAI PUNYAMU
+    const namaCewek = "Sayang";
+    const namaKamu = "Aku";
+    const nomorWA = "6281234567890"; // isi nomor kamu, format 62 tanpa +
+    const fotoKalian = ""; // isi link foto, contoh: "foto.jpg" atau kosongkan saja
+
+    const app = document.getElementById('app');
+    const toast = document.getElementById('toast');
+    let step = 0;
+    let jawaban = "";
+    let envelopeOpened = false;
+    let audioCtx;
+    let musicPlaying = false;
+
+    const screens = [
+      () => `
+        <div class="envelope-scene">
+          <div class="small-title">BUAT KAMU 💞</div>
+          <div class="envelope-box ${envelopeOpened ? 'open' : ''}" id="envelopeBox" onclick="openEnvelope()">
+            <div class="letter-paper">💗</div>
+            <div class="envelope-back"></div>
+            <div class="envelope-flap"></div>
+            <div class="envelope-front"></div>
+            <div class="bear"><div class="face">•ᴥ•</div></div>
+          </div>
+          <p>${envelopeOpened ? 'Suratnya kebuka nih, lanjut yaa 💌' : 'Klik amplopnya dulu yaa 💌'}</p>
+          <button class="pink" onclick="openEnvelope()">${envelopeOpened ? 'LANJUT ➜' : 'BUKA AMPLOP'}</button>
+        </div>
+      `,
+      () => `
+        <h1>Sebelum mulai...</h1>
+        <p>Nyalain musiknya dulu biar makin manis 🎵</p>
+        <button class="purple" onclick="startMusic()">NYALAIN MUSIK 🎵</button>
+        <button class="pink" onclick="next()">LANJUT TANPA MUSIK ➜</button>
+      `,
+      () => `
+        <div class="photo-frame">${fotoKalian ? `<img src="${fotoKalian}" alt="foto kita">` : '💑'}</div>
+        <h1>Haii ${namaCewek} 🙈</h1>
+        <p>Ini kejutan kecil dari ${namaKamu}, khusus buat kamu.</p>
+        <button class="pink" onclick="nextTyping()">BUKA PESAN 💌</button>
+      `,
+      () => `
+        <div class="small-title">PESAN KECIL</div>
+        <div class="typing" id="typingText"></div>
+        <button class="pink" id="typingBtn" style="display:none" onclick="next()">MULAI MISI 💗</button>
+      `,
+      () => `
+        <div class="small-title">MISI 1</div>
+        <h1>Susun Kata "SAYANG" :</h1>
+        <div class="answer" id="answer">${jawaban}</div>
+        <div class="letters">
+          ${['S','Y','A','N','G','A'].map(l => `<div class="letter" onclick="pickLetter('${l}', this)">${l}</div>`).join('')}
+        </div>
+        <button class="pink" onclick="checkWord()">CEK JAWABAN 💗</button>
+      `,
+      () => `
+        <p>Sebelum lanjut misi ini, tolong jujur jawabnya cinta❤...</p>
+        <button class="pink" onclick="next()">LANJUT ➜</button>
+      `,
+      () => `
+        <div class="small-title">MISI 2 (1/3)</div>
+        <h1>Siapa cowok paling ganteng di mata kamu?</h1>
+        <button class="pink" onclick="next()">Pastinya ${namaKamu} 😎</button>
+        <button class="white" onclick="badClick()">Gak Bisa! 😝</button>
+      `,
+      () => `
+        <div class="small-title">MISI 2 (2/3)</div>
+        <h1>Kamu punya siapa?</h1>
+        <button class="pink" onclick="celebrate(); next();">Punya Kamu Dong! 🧑‍🤝‍🧑</button>
+        <button class="white" onclick="badClick()">Gk tau</button>
+      `,
+      () => `
+        <div class="small-title">MISI 2 (3/3)</div>
+        <h1>Janji jangan pernah pergi ya?</h1>
+        <button class="pink" onclick="next()">Janji Sayang! 💖</button>
+        <button class="white" onclick="badClick()">Salah klik! 🙄</button>
+      `,
+      () => `
+        <div class="small-title">ALASAN AKU SAYANG KAMU</div>
+        <div class="reasons">
+          1. Kamu selalu bikin aku nyaman 💗<br>
+          2. Senyum kamu bikin hari aku lebih baik 🥺<br>
+          3. Kamu lucu dengan cara kamu sendiri 😝<br>
+          4. Kamu berharga banget buat aku ✨<br>
+          5. Aku bahagia punya kamu ❤️
+        </div>
+        <button class="pink" onclick="next()">LANJUT LAGI ➜</button>
+      `,
+      () => `
+        <h1>Haiii, cieee dapet surat nih🙈</h1>
+        <p>On in dulu tombol ini👇:</p>
+        <button class="white" id="switchBtn" onclick="toggleLove()">OFF</button>
+      `,
+      () => `
+        <h1>I LOVE YOU TOO! ❤️</h1>
+        <p>Seneng banget dengernya!</p>
+        <button class="purple" onclick="virtualHug()">PELUK VIRTUAL 🤗</button>
+        <button class="pink" onclick="celebrate(); next();">MAU LANJUT? ✨</button>
+      `,
+      () => `
+        <div class="small-title">LAST BOSS!</div>
+        <h1>Kamu inget gak nomor WA pacar kamu?<br>Coba isi dong kalo emang sayang!</h1>
+        <input id="waInput" placeholder="+62 8xxxx" inputmode="numeric" />
+        <button class="green" onclick="sendWA()">Kirim Kasih Sayang ❤️</button>
+      `,
+      () => `
+        <div class="small-title">PERTANYAAN TERAKHIR</div>
+        <h1>Will you be my Valentine? ❤️</h1>
+        <button class="cyan" onclick="finishLove()">MAU BANGET! 😍</button>
+        <button class="white" id="noBtn" onclick="moveNo()">Nggak</button>
+      `,
+      () => `
+        <div class="small-title">SURAT TERAKHIR</div>
+        <p>Aku nggak janji jadi orang yang paling sempurna. Tapi aku janji akan selalu berusaha jadi orang yang bikin kamu merasa dicintai, dihargai, dan nggak sendirian.</p>
+        <button class="pink" onclick="next()">LANJUT 💗</button>
+      `,
+      () => `
+        <h1>YEAYYY! 💖</h1>
+        <p>Makasih ya udah mau bertahan sejauh ini sama aku. Aku sayang kamu, hari ini, besok, dan seterusnya.</p>
+        <button class="purple" onclick="virtualHug()">PELUK VIRTUAL 🤗</button>
+        <button class="pink" onclick="celebrate()">LOVE U ❤️</button>
+      `
+    ];
+
+    function render() {
+      app.innerHTML = screens[step]();
+      if (step === 3) typeMessage();
+    }
+
+    function next() {
+      step++;
+      render();
+    }
+
+    function nextTyping() {
+      next();
+    }
+
+    function openEnvelope() {
+      if (!envelopeOpened) {
+        envelopeOpened = true;
+        render();
+        setTimeout(() => celebrate(), 350);
+      } else {
+        envelopeOpened = false;
+        next();
+      }
+    }
+
+    function typeMessage() {
+      const text = `Aku cuma mau bilang... makasih ya udah hadir di hidup aku. Semoga kejutan kecil ini bisa bikin kamu senyum hari ini 💗`;
+      const target = document.getElementById('typingText');
+      const btn = document.getElementById('typingBtn');
+      let i = 0;
+      const timer = setInterval(() => {
+        target.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+          clearInterval(timer);
+          btn.style.display = 'block';
+        }
+      }, 45);
+    }
+
+    function pickLetter(letter, el) {
+      jawaban += letter;
+      el.style.visibility = 'hidden';
+      document.getElementById('answer').textContent = jawaban;
+    }
+
+    function checkWord() {
+      if (jawaban === 'SAYANG') {
+        jawaban = '';
+        next();
+      } else {
+        app.innerHTML = `
+          <h1>💔</h1>
+          <p>Aduh! Susunannya salah.<br>Pelan-pelan aja sayang!</p>
+          <button class="pink" onclick="jawaban=''; render();">ULANGI</button>
+        `;
+      }
+    }
+
+    function badClick() {
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 1200);
+    }
+
+    function toggleLove() {
+      const btn = document.getElementById('switchBtn');
+      btn.textContent = 'ON 💗';
+      btn.className = 'pink';
+      setTimeout(next, 700);
+    }
+
+    function sendWA() {
+      const isi = document.getElementById('waInput').value.trim();
+      if (!isi) {
+        badClick();
+        return;
+      }
+      const pesan = encodeURIComponent(`Hai ${namaKamu}, aku sudah buka web kejutan kamu. Aku sayang kamu ❤️`);
+      window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
+      step++;
+      render();
+    }
+
+    function moveNo() {
+      const btn = document.getElementById('noBtn');
+      btn.style.position = 'fixed';
+      btn.style.width = '130px';
+      btn.style.left = Math.random() * (window.innerWidth - 150) + 'px';
+      btn.style.top = Math.random() * (window.innerHeight - 70) + 'px';
+    }
+
+    function finishLove() {
+      celebrate();
+      next();
+    }
+
+    function virtualHug() {
+      const h = document.createElement('div');
+      h.className = 'hug';
+      h.textContent = '🤗💗';
+      document.body.appendChild(h);
+      celebrate();
+      setTimeout(() => h.remove(), 1300);
+    }
+
+    function celebrate() {
+      const colors = ['#ff2c68', '#18e4d2', '#ffd166', '#7b61ff', '#35d07f'];
+      for (let i = 0; i < 70; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.animationDelay = Math.random() * .8 + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 3500);
+      }
+    }
+
+    function startMusic() {
+      if (musicPlaying) {
+        next();
+        return;
+      }
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      musicPlaying = true;
+      playMelody();
+      next();
+    }
+
+    function playTone(freq, start, duration) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, audioCtx.currentTime + start);
+      gain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + start + 0.03);
+      gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + start + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(audioCtx.currentTime + start);
+      osc.stop(audioCtx.currentTime + start + duration + 0.05);
+    }
+
+    function playMelody() {
+      if (!musicPlaying || !audioCtx) return;
+      const notes = [523, 659, 784, 659, 698, 784, 880, 784];
+      notes.forEach((n, i) => playTone(n, i * 0.45, 0.38));
+      setTimeout(playMelody, 3800);
+    }
+
+    function makeHearts() {
+      const box = document.getElementById('hearts');
+      for (let i = 0; i < 22; i++) {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = '♥';
+        h.style.left = Math.random() * 100 + 'vw';
+        h.style.animationDelay = Math.random() * 7 + 's';
+        h.style.fontSize = (12 + Math.random() * 16) + 'px';
+        box.appendChild(h);
+      }
+    }
+
+    makeHearts();
+    render();
+  </script>
+</body>
+</html>
