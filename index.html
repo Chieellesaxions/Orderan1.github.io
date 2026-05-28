@@ -9,7 +9,7 @@
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      min-height: 100vh;
+      min-height: 100dvh;
       font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
       background: #ffc8d6;
       overflow-x: hidden;
@@ -19,7 +19,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px 12px 70px;
+      padding: max(18px, env(safe-area-inset-top)) 12px max(78px, env(safe-area-inset-bottom));
     }
 
     body::-webkit-scrollbar {
@@ -148,7 +148,7 @@
     .progress {
       position: fixed;
       left: 50%;
-      bottom: 22px;
+      bottom: max(18px, env(safe-area-inset-bottom));
       transform: translateX(-50%);
       z-index: 4;
       display: flex;
@@ -194,7 +194,7 @@
       position: relative;
       z-index: 2;
       width: min(94vw, 760px);
-      max-height: calc(100vh - 110px);
+      max-height: calc(100dvh - 115px);
       min-height: 270px;
       overflow-y: auto;
       scrollbar-width: none;
@@ -589,13 +589,14 @@
 
     @media (max-width: 560px) {
       body {
-        align-items: flex-start;
-        padding-top: 18px;
+        align-items: center;
+        justify-content: center;
+        padding: max(14px, env(safe-area-inset-top)) 12px max(78px, env(safe-area-inset-bottom));
       }
 
       .card {
-        width: 94vw;
-        max-height: calc(100vh - 95px);
+        width: min(94vw, 430px);
+        max-height: calc(100dvh - 105px);
       }
 
       .reasons {
