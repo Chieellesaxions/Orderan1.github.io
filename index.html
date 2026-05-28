@@ -371,6 +371,85 @@
       z-index: 10;
       display: none;
     }
+     .opening-wrap {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: fadeSoft .8s ease;
+  }
+
+  .opening-title {
+    font-family: Arial, sans-serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: #ff2c68;
+    margin-bottom: 14px;
+    text-align: center;
+    animation: upIn .8s ease;
+  }
+
+  .opening-text {
+    font-family: Arial, sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #222;
+    text-align: center;
+    margin-bottom: 26px;
+    animation: upIn 1s ease;
+  }
+
+  .opening-mini {
+    font-family: 'Courier New', monospace;
+    font-size: 15px;
+    font-weight: 800;
+    color: #777;
+    margin-bottom: 18px;
+    animation: fadeSoft 1.2s ease;
+  }
+
+  .opening-heart {
+    font-size: 54px;
+    margin-bottom: 18px;
+    animation: pulseHeart 1.4s infinite;
+  }
+
+  .fade-btn {
+    animation: fadeSoft 1.2s ease;
+  }
+
+  @keyframes fadeSoft {
+    from {
+      opacity: 0;
+      transform: scale(.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes upIn {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulseHeart {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.12);
+    }
+  }
   </style>
 </head>
 <body>
@@ -396,6 +475,42 @@
     let musicPlaying = false;
 
     const screens = [
+       () => `
+    <div class="opening-wrap">
+      <div class="opening-heart">🎂🤍</div>
+      <div class="opening-mini">a little birthday surprise for you</div>
+      <div class="opening-title">happy birthday sayanggg</div>
+      <div class="opening-text">
+        ada sesuatu kecil<br>
+        yang aku siapin buat kamu...
+      </div>
+      <button class="pink fade-btn" onclick="next()">lanjut yaa ➜</button>
+    </div>
+  `,
+
+  () => `
+    <div class="opening-wrap">
+      <div class="opening-heart">💌</div>
+      <div class="opening-title">jangan buru-buru yaa</div>
+      <div class="opening-text">
+        bukanya pelan-pelan aja,<br>
+        dibaca semuanya juga yaa 😋
+      </div>
+      <button class="pink fade-btn" onclick="next()">siapp 💗</button>
+    </div>
+  `,
+
+  () => `
+    <div class="opening-wrap">
+      <div class="opening-heart">🧸</div>
+      <div class="opening-title">ready?</div>
+      <div class="opening-text">
+        kalau udah siap,<br>
+        aku kasih hadiahnya sekarang 🎁
+      </div>
+      <button class="pink fade-btn" onclick="next()">buka sekarang ✨</button>
+    </div>
+  `,
       () => `
         <div class="envelope-scene">
           <div class="small-title">HAPPY BIRTHDAY 🎂</div>
