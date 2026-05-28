@@ -138,6 +138,40 @@
       filter: drop-shadow(0 5px 0 rgba(0,0,0,.12));
     }
 
+    .soft-glow {
+      position: fixed;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.55), rgba(255,170,196,.22), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      animation: glowMove 12s ease-in-out infinite alternate;
+      filter: blur(2px);
+    }
+
+    .glow-one { left: -80px; top: 12%; }
+    .glow-two { right: -90px; bottom: 10%; animation-delay: -4s; }
+
+    @keyframes glowMove {
+      from { transform: translateY(0) scale(1); opacity: .58; }
+      to { transform: translateY(-24px) scale(1.14); opacity: .85; }
+    }
+
+    .sparkle {
+      position: fixed;
+      color: rgba(255,255,255,.9);
+      pointer-events: none;
+      z-index: 1;
+      animation: sparkleTwinkle 4.8s ease-in-out infinite;
+      text-shadow: 0 0 10px rgba(255,255,255,.9);
+    }
+
+    @keyframes sparkleTwinkle {
+      0%, 100% { opacity: .18; transform: scale(.82) rotate(0deg); }
+      50% { opacity: .9; transform: scale(1.18) rotate(12deg); }
+    }
+
     @keyframes balloonUp {
       0% { transform: translateY(0) translateX(0) rotate(-4deg); opacity: 0; }
       12% { opacity: .55; }
@@ -674,6 +708,78 @@
       opacity: .9;
     }
 
+    .wish-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 16px 0 20px;
+    }
+
+    .wish-card {
+      min-height: 118px;
+      border: 4px solid #222;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #fff, #fff1f6);
+      box-shadow: 6px 7px 0 #191919;
+      padding: 16px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: 'Quicksand', Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.35;
+      cursor: pointer;
+      transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s ease, background .35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wish-card:hover {
+      transform: translateY(-5px) rotate(-1deg);
+      box-shadow: 7px 10px 0 #191919;
+    }
+
+    .wish-card.opened {
+      background: linear-gradient(145deg, #ffedf4, #ffffff);
+      color: #ff2c68;
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .wish-card::before {
+      content: '✨';
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      opacity: .55;
+      font-size: 18px;
+    }
+
+    .mission-complete {
+      font-family: 'Pacifico', cursive;
+      font-size: 34px;
+      font-weight: 400;
+      color: #ff2c68;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      text-shadow: 0 3px 0 rgba(255,255,255,.65);
+    }
+
+    .from-text {
+      font-family: 'Quicksand', Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      color: #8f6671;
+      margin-bottom: 18px;
+      letter-spacing: .6px;
+    }
+
+    @media (max-width: 560px) {
+      .wish-grid { grid-template-columns: 1fr; }
+      .wish-card { min-height: 92px; }
+    }
+
     .toast {
       position: fixed;
       bottom: 20px;
@@ -700,6 +806,8 @@
       <button class="intro-btn" onclick="startOpening()">tap to open ✨</button>
     </div>
   </div>
+  <div class="soft-glow glow-one"></div>
+  <div class="soft-glow glow-two"></div>
   <div class="hearts" id="hearts"></div>
   <div class="balloons" id="balloons"></div>
   <main class="card" id="app"></main>
@@ -711,7 +819,7 @@
     const namaCowok = "Sayang"; // ganti dengan nama cowok kamu
     const namaKamu = "Aku"; // ganti dengan nama kamu
     const umurCowok = 24;
-    const nomorWA = "08217738908"; // isi nomor kamu, format 62 tanpa +
+    const nomorWA = "6281234567890"; // isi nomor kamu, format 62 tanpa +
     const fotoKalian = ""; // isi link foto, contoh: "foto.jpg" atau kosongkan saja
     const laguRomantis = "music.mp3"; // taruh file lagu satu folder dengan index.html, lalu tulis namanya di sini
 
@@ -722,6 +830,7 @@
     let envelopeOpened = false;
     let audioPlayer;
     let musicPlaying = false;
+    let sfxCtx;
 
     const screens = [
       () => `
@@ -821,6 +930,17 @@
         <button class="pink" onclick="next()">LANJUT LAGI ➜</button>
       `,
       () => `
+        <div class="small-title">WISH JAR FOR YOU</div>
+        <h1>tap kartu doanya satu-satu yaa ✨</h1>
+        <div class="wish-grid">
+          <div class="wish-card" onclick="openWish(this, 'semoga kamu sehat selalu, badan kamu kuat, hati kamu juga tenang 🤍')">tap to open wish #1</div>
+          <div class="wish-card" onclick="openWish(this, 'semoga rezeki kamu makin lancar dan jalannya dimudahin terus ✨')">tap to open wish #2</div>
+          <div class="wish-card" onclick="openWish(this, 'semoga semua yang lagi kamu usahain pelan-pelan jadi nyata 🥺')">tap to open wish #3</div>
+          <div class="wish-card" onclick="openWish(this, 'semoga kamu tetap sama aku, dan kita bahagia bareng-bareng hehe 💗')">tap to open wish #4</div>
+        </div>
+        <button class="pink" onclick="next()">UDAH DIBUKA SEMUA 💌</button>
+      `,
+      () => `
         <h1>Haiii, cieee yang ulang tahun dapet surat nih🙈</h1>
         <p>On in dulu tombol ini👇:</p>
         <button class="white" id="switchBtn" onclick="toggleLove()">OFF</button>
@@ -885,10 +1005,18 @@
     }
 
     function sweetChoice(message) {
+      playSfx('ting');
       const note = document.getElementById('choiceNote');
       if (note) note.textContent = message;
       celebrateMini();
       setTimeout(next, 950);
+    }
+
+    function openWish(card, text) {
+      playSfx('ting');
+      card.textContent = text;
+      card.classList.add('opened');
+      popAt(card.getBoundingClientRect().left + card.offsetWidth / 2, card.getBoundingClientRect().top + card.offsetHeight / 2, '✨');
     }
 
     function nextTyping() {
@@ -897,10 +1025,12 @@
 
     function openEnvelope() {
       if (!envelopeOpened) {
+        playSfx('pop');
         envelopeOpened = true;
         render();
         setTimeout(() => celebrate(), 1250);
       } else {
+        playSfx('ting');
         envelopeOpened = false;
         next();
       }
@@ -941,6 +1071,7 @@
     }
 
     function badClick() {
+      playSfx('pop');
       toast.style.display = 'block';
       app.classList.remove('shake');
       void app.offsetWidth;
@@ -965,11 +1096,13 @@
       const pesan = encodeURIComponent(`Hai ${namaKamu}, aku sudah buka web ulang tahun dari kamu. Makasih ya, aku sayang kamu ❤️`);
       window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
       app.innerHTML = `
-        <h1>udah selesaiii 🎂💗</h1>
-        <p>makasih yaa udah buka semuanya pelan-pelan. semoga hari ulang tahun kamu jadi sedikit lebih manis hari ini.</p>
+        <div class="mission-complete">mission complete 🎂</div>
+        <p>you are loved, today and always. makasih yaa udah buka semuanya pelan-pelan. semoga hari ulang tahun kamu jadi sedikit lebih manis hari ini.</p>
+        <div class="from-text">from: cella 🤍</div>
         <button class="purple" onclick="virtualHug()">PELUK VIRTUAL 🤗</button>
-        <button class="pink" onclick="celebrate()">LOVE U ❤️</button>
+        <button class="pink" onclick="restartWeb()">PUTAR ULANG DARI AWAL</button>
       `;
+      celebrate();
     }
 
     function moveNo() {
@@ -1014,6 +1147,7 @@
     }
 
     function celebrate() {
+      playSfx('sparkle');
       const colors = ['#ff2c68', '#18e4d2', '#ffd166', '#7b61ff', '#35d07f'];
       for (let i = 0; i < 45; i++) {
         const c = document.createElement('div');
@@ -1088,6 +1222,63 @@
       }
     }
 
+    function makeSparkles() {
+      const icons = ['✦', '✧', '⋆'];
+      for (let i = 0; i < 18; i++) {
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        s.textContent = icons[i % icons.length];
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.top = Math.random() * 100 + 'vh';
+        s.style.animationDelay = Math.random() * 5 + 's';
+        s.style.fontSize = (12 + Math.random() * 14) + 'px';
+        document.body.appendChild(s);
+      }
+    }
+
+    function getSfxCtx() {
+      if (!sfxCtx) sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return sfxCtx;
+    }
+
+    function tone(freq, duration, type = 'sine', volume = .035, delay = 0) {
+      const ctx = getSfxCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, ctx.currentTime + delay);
+      gain.gain.linearRampToValueAtTime(volume, ctx.currentTime + delay + .015);
+      gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + delay + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + delay);
+      osc.stop(ctx.currentTime + delay + duration + .03);
+    }
+
+    function playSfx(kind) {
+      try {
+        if (kind === 'pop') tone(220, .16, 'triangle', .03);
+        if (kind === 'ting') {
+          tone(740, .12, 'sine', .028);
+          tone(980, .18, 'sine', .022, .08);
+        }
+        if (kind === 'sparkle') {
+          tone(880, .10, 'sine', .018);
+          tone(1175, .14, 'sine', .014, .07);
+          tone(1568, .16, 'sine', .012, .14);
+        }
+      } catch (e) {}
+    }
+
+    function restartWeb() {
+      step = 0;
+      jawaban = '';
+      envelopeOpened = false;
+      render();
+      document.body.classList.add('started');
+    }
+
     document.addEventListener('click', (e) => {
       if (e.target.closest('button') || e.target.closest('.letter') || e.target.closest('.envelope-box')) {
         popAt(e.clientX, e.clientY, Math.random() > .5 ? '💗' : '✨');
@@ -1096,6 +1287,7 @@
 
     makeHearts();
     makeBalloons();
+    makeSparkles();
     render();
   </script>
 </body>
