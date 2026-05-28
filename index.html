@@ -61,6 +61,133 @@
       z-index: 0;
     }
 
+    .preloader-screen,
+    .love-rain-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,.72) 0 8%, transparent 26%),
+        radial-gradient(circle at 82% 72%, rgba(185,128,255,.30) 0 10%, transparent 32%),
+        radial-gradient(circle at 50% 100%, rgba(127,245,233,.18) 0 10%, transparent 34%),
+        linear-gradient(135deg, #ffe3eb 0%, #ffc0d2 44%, #ff93b8 100%);
+    }
+
+    .preloader-screen.hide,
+    .love-rain-screen.hide {
+      opacity: 0;
+      transform: scale(1.08);
+      filter: blur(10px);
+      transition: opacity 1.9s cubic-bezier(.22, 1, .36, 1), transform 2.2s cubic-bezier(.22, 1, .36, 1), filter 2.2s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .loader-card {
+      width: min(88vw, 420px);
+      padding: 28px 26px;
+      border: 3px solid rgba(255,255,255,.28);
+      border-radius: 30px;
+      background: rgba(31, 23, 35, .38);
+      box-shadow: 0 28px 70px rgba(70, 22, 70, .28), inset 0 0 0 1px rgba(255,255,255,.18);
+      backdrop-filter: blur(14px);
+      text-align: center;
+      animation: loaderBreath 3.2s ease-in-out infinite;
+    }
+
+    @keyframes loaderBreath {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.025); }
+    }
+
+    .loader-icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fff, #ffeaf2 48%, #fff6c7 100%);
+      border: 4px solid rgba(255,255,255,.45);
+      box-shadow: 0 18px 34px rgba(255, 44, 104, .24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      animation: pulseHeart 3.1s ease-in-out infinite;
+    }
+
+    .loader-text {
+      margin-bottom: 20px;
+      color: rgba(255,255,255,.95);
+      font-family: 'Nunito', 'Quicksand', Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      text-shadow: 0 0 20px rgba(255,255,255,.22);
+    }
+
+    .loader-bar {
+      width: 100%;
+      height: 12px;
+      padding: 2px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.22);
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    .loader-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff5d92, #ffd1df, #7ff5e9);
+      box-shadow: 0 0 18px rgba(255, 159, 189, .72);
+      animation: loadingFill 5.2s cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+
+    @keyframes loadingFill {
+      0% { width: 0%; }
+      40% { width: 42%; }
+      76% { width: 82%; }
+      100% { width: 100%; }
+    }
+
+    .love-rain-screen {
+      z-index: 115;
+      opacity: 0;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.10), transparent 38%),
+        linear-gradient(135deg, rgba(22, 18, 34, .78), rgba(255, 44, 104, .38));
+      transition: opacity 2.1s cubic-bezier(.22, 1, .36, 1), filter 2.3s ease, transform 2.3s ease;
+    }
+
+    .love-rain-screen.show {
+      opacity: 1;
+    }
+
+    .rain-item {
+      position: absolute;
+      top: -14vh;
+      left: 0;
+      color: rgba(244, 252, 255, .76);
+      font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
+      font-weight: 700;
+      white-space: nowrap;
+      text-shadow: 0 0 14px rgba(172, 245, 255, .72), 0 0 28px rgba(255, 155, 190, .24);
+      filter: blur(.25px);
+      animation: loveRainFall cubic-bezier(.33, .02, .21, 1) forwards;
+      will-change: transform, opacity;
+    }
+
+    @keyframes loveRainFall {
+      0% { transform: translate3d(0, -18vh, 0) rotate(-4deg) scale(.94); opacity: 0; }
+      16% { opacity: .78; }
+      72% { opacity: .70; }
+      100% { transform: translate3d(var(--drift), 122vh, 0) rotate(5deg) scale(1.03); opacity: 0; }
+    }
+
     .intro-screen {
       position: fixed;
       inset: 0;
@@ -74,7 +201,14 @@
         radial-gradient(circle at 22% 20%, rgba(255,255,255,.76) 0 9%, transparent 28%),
         radial-gradient(circle at 80% 75%, rgba(255,159,189,.58) 0 12%, transparent 34%),
         linear-gradient(135deg, #ffe3eb 0%, #ffc0d2 46%, #ff91b5 100%);
-      transition: opacity 1.45s cubic-bezier(.22, 1, .36, 1), transform 1.8s cubic-bezier(.22, 1, .36, 1), filter 1.8s cubic-bezier(.22, 1, .36, 1);
+      transition: opacity 2.2s cubic-bezier(.22, 1, .36, 1), transform 2.5s cubic-bezier(.22, 1, .36, 1), filter 2.5s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .intro-screen.intro-wait {
+      opacity: 0;
+      transform: scale(.92);
+      filter: blur(10px);
+      pointer-events: none;
     }
 
     .intro-screen.hide {
@@ -768,7 +902,17 @@
   </style>
 </head>
 <body>
-  <div class="intro-screen" id="introScreen">
+  <div class="preloader-screen" id="preloaderScreen">
+    <div class="loader-card">
+      <div class="loader-icon">💗</div>
+      <div class="loader-text" id="loaderText">loading your surprise...</div>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="love-rain-screen" id="loveRainScreen"></div>
+
+  <div class="intro-screen intro-wait" id="introScreen">
     <div class="intro-content">
       <div class="intro-heart">🎂🤍</div>
       <div class="intro-mini">a little birthday surprise</div>
@@ -791,10 +935,10 @@
     const namaKamu = "Aku";
     const umurCowok = 24;
     const nomorWA = "6281234567890";
-  const fotoKalian1 = "foto1.jpg";
-const fotoKalian2 = "foto2.jpg";
-const fotoKalian3 = "foto3.jpg";
-const fotoKalian4 = "foto4.jpg";
+    const fotoKalian1 = ""; // contoh: "foto1.jpg"
+    const fotoKalian2 = ""; // contoh: "foto2.jpg"
+    const fotoKalian3 = ""; // contoh: "foto3.jpg"
+    const fotoKalian4 = ""; // contoh: "foto4.jpg"
     const laguRomantis = "music.mp3";
 
     const app = document.getElementById('app');
@@ -1057,6 +1201,62 @@ const fotoKalian4 = "foto4.jpg";
       const progress = document.getElementById('progress');
       if (!progress) return;
       progress.innerHTML = screens.map((_, i) => `<span class="dot ${i <= step ? 'active' : ''}"></span>`).join('');
+    }
+
+    function runPreIntro() {
+      const preloader = document.getElementById('preloaderScreen');
+      const rain = document.getElementById('loveRainScreen');
+      const intro = document.getElementById('introScreen');
+      const loaderText = document.getElementById('loaderText');
+
+      setTimeout(() => {
+        if (loaderText) loaderText.textContent = 'complete! entering...';
+      }, 4150);
+
+      setTimeout(() => {
+        if (preloader) preloader.classList.add('hide');
+        if (rain) {
+          createLoveRain();
+          rain.classList.add('show');
+        }
+      }, 5550);
+
+      setTimeout(() => {
+        if (preloader) preloader.style.display = 'none';
+      }, 7800);
+
+      setTimeout(() => {
+        if (rain) rain.classList.add('hide');
+      }, 15100);
+
+      setTimeout(() => {
+        if (intro) intro.classList.remove('intro-wait');
+      }, 16000);
+
+      setTimeout(() => {
+        if (rain) rain.style.display = 'none';
+      }, 17600);
+    }
+
+    function createLoveRain() {
+      const rain = document.getElementById('loveRainScreen');
+      if (!rain || rain.dataset.ready === 'true') return;
+      rain.dataset.ready = 'true';
+      const words = ['I love you mas', 'happy birthday mas', '24', '♡', '✨', 'love you', 'for you'];
+      const count = window.innerWidth < 560 ? 54 : 72;
+
+      for (let i = 0; i < count; i++) {
+        const item = document.createElement('div');
+        item.className = 'rain-item';
+        item.textContent = words[Math.floor(Math.random() * words.length)];
+        item.style.left = Math.random() * 104 - 4 + 'vw';
+        item.style.fontSize = (12 + Math.random() * (window.innerWidth < 560 ? 16 : 24)) + 'px';
+        item.style.animationDuration = (10.5 + Math.random() * 4.8) + 's';
+        item.style.animationDelay = (Math.random() * 3.8) + 's';
+        item.style.setProperty('--drift', (Math.random() * 130 - 65) + 'px');
+        item.style.opacity = String(.42 + Math.random() * .38);
+        rain.appendChild(item);
+      }
     }
 
     function startOpening() {
@@ -1437,6 +1637,7 @@ const fotoKalian4 = "foto4.jpg";
     makeBalloons();
     makeSparkles();
     render();
+    runPreIntro();
   </script>
 </body>
 </html>
