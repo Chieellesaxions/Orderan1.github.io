@@ -748,7 +748,7 @@
   <div class="toast" id="toast">Jangan pilih yang itu</div>
 
   <script>
-    const namaCowok = "Sayang";
+    const namaCowok = "Mas";
     const namaKamu = "Aku";
     const umurCowok = 24;
     const nomorWA = "6281234567890";
@@ -932,12 +932,12 @@
       `,
       () => `
         <div class="small-title">SURAT TERAKHIR 💌</div>
-        <p>Selamat ulang tahun ke-24, sayang. Aku nggak janji bisa kasih hadiah paling mewah, tapi aku janji akan selalu berusaha jadi orang yang bikin kamu merasa dicintai, dihargai, dan ditemani. Semoga kamu selalu sehat, rezekimu lancar, langkahmu dimudahkan, dan semua impianmu pelan-pelan tercapai.</p>
+        <p>Selamat ulang tahun ke-24, mas. Aku nggak janji bisa kasih hadiah paling mewah, tapi aku janji akan selalu berusaha jadi orang yang bikin kamu merasa dicintai, dihargai, dan ditemani. Semoga kamu selalu sehat, rezekimu lancar, langkahmu dimudahkan, dan semua impianmu pelan-pelan tercapai.</p>
         <button class="pink" onclick="next()">LANJUT</button>
       `,
       () => `
         <h1>YEAYYY! 💖</h1>
-        <p>Happy birthday, cowokku yang ke-24. Makasih sudah jadi orang yang spesial di hidup aku. Aku sayang kamu, hari ini, besok, dan seterusnya.</p>
+        <p>Happy birthday, mas yang ke-24. Makasih sudah jadi orang yang spesial di hidup aku. Aku sayang kamu, hari ini, besok, dan seterusnya.</p>
         <button class="purple" onclick="virtualHug()">PELUK VIRTUAL</button>
         <button class="pink" onclick="next()">ADA HADIAH TERAKHIR 🎁</button>
       `,
@@ -1037,7 +1037,7 @@
     }
 
     function typeMessage() {
-      const text = `happy birthday yaa sayanggg 🎂🤍 ga kerasa kamu udah 24 aja. aku cuma mau bilang, makasih udah jadi kamu yang selalu aku banggain. semoga di umur baru ini kamu makin bahagia, makin kuat, rezekinya makin lancar, dan semua yang kamu usahain pelan-pelan jadi nyata. i’m so proud of you, always 💗`;
+      const text = `happy birthday yaa masss 🎂🤍 ga kerasa kamu udah 24 aja. aku cuma mau bilang, makasih udah jadi kamu yang selalu aku banggain. semoga di umur baru ini kamu makin bahagia, makin kuat, rezekinya makin lancar, dan semua yang kamu usahain pelan-pelan jadi nyata. i’m so proud of you, always 💗`;
       const target = document.getElementById('typingText');
       const btn = document.getElementById('typingBtn');
       if (!target || !btn) return;
@@ -1076,7 +1076,7 @@
       playSfx('pop');
       app.innerHTML = `
         <h1>💔</h1>
-        <p>Aduh! Susunannya salah.<br>Pelan-pelan aja sayang!</p>
+        <p>Aduh! Susunannya salah.<br>Pelan-pelan aja mas!</p>
         <button class="pink" onclick="jawaban=''; render();">ULANGI</button>
       `;
     }
@@ -1170,7 +1170,7 @@
         return;
       }
 
-      const pesan = encodeURIComponent(`Hai ${namaKamu}, aku sudah buka web ulang tahun dari kamu. Makasih ya, aku sayang kamu ❤️`);
+      const pesan = encodeURIComponent(`Hai ${namaKamu}, aku sudah buka web ulang tahun dari kamu. Makasih ya, mas sayang kamu ❤️`);
       window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
       showFinalScreen();
       celebrate();
