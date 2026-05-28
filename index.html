@@ -711,7 +711,7 @@
     const namaCowok = "Sayang"; // ganti dengan nama cowok kamu
     const namaKamu = "Aku"; // ganti dengan nama kamu
     const umurCowok = 24;
-    const nomorWA = "08217738908"; // isi nomor kamu, format 62 tanpa +
+    const nomorWA = "6281234567890"; // isi nomor kamu, format 62 tanpa +
     const fotoKalian = ""; // isi link foto, contoh: "foto.jpg" atau kosongkan saja
     const laguRomantis = "music.mp3"; // taruh file lagu satu folder dengan index.html, lalu tulis namanya di sini
 
@@ -832,12 +832,6 @@
         <button class="pink" onclick="celebrate(); next();">MAU LANJUT? ✨</button>
       `,
       () => `
-        <div class="small-title">LAST BOSS ULTAH!</div>
-        <h1>Coba ketik nomor WA pacar kamu<br>biar bisa kirim kabar kalau kamu senyum hari ini!</h1>
-        <input id="waInput" placeholder="+62 8xxxx" inputmode="numeric" />
-        <button class="green" onclick="sendWA()">Kirim Ucapan Manis ❤️</button>
-      `,
-      () => `
         <div class="small-title">PERTANYAAN TERAKHIR</div>
         <h1>Mau rayain ulang tahun ke-24 ini sama aku terus? ❤️</h1>
         <button class="cyan" onclick="finishLove()">MAU BANGET! 😍</button>
@@ -852,7 +846,13 @@
         <h1>YEAYYY! 💖</h1>
         <p>Happy birthday, cowokku yang ke-24. Makasih sudah jadi orang yang spesial di hidup aku. Aku sayang kamu, hari ini, besok, dan seterusnya.</p>
         <button class="purple" onclick="virtualHug()">PELUK VIRTUAL 🤗</button>
-        <button class="pink" onclick="celebrate()">LOVE U ❤️</button>
+        <button class="pink" onclick="next()">LAST STEP NIH 😋</button>
+      `,
+      () => `
+        <div class="small-title">LAST BOSS ULTAH!</div>
+        <h1>Terakhir nih, tebak nomor WA pacar kamu 😋<br>kalau bener, kirim kabar kalau kamu senyum hari ini!</h1>
+        <input id="waInput" placeholder="+62 8xxxx" inputmode="numeric" />
+        <button class="green" onclick="sendWA()">Kirim Ucapan Manis ❤️</button>
       `
     ];
 
@@ -964,8 +964,12 @@
       }
       const pesan = encodeURIComponent(`Hai ${namaKamu}, aku sudah buka web ulang tahun dari kamu. Makasih ya, aku sayang kamu ❤️`);
       window.open(`https://wa.me/${nomorWA}?text=${pesan}`, '_blank');
-      step++;
-      render();
+      app.innerHTML = `
+        <h1>udah selesaiii 🎂💗</h1>
+        <p>makasih yaa udah buka semuanya pelan-pelan. semoga hari ulang tahun kamu jadi sedikit lebih manis hari ini.</p>
+        <button class="purple" onclick="virtualHug()">PELUK VIRTUAL 🤗</button>
+        <button class="pink" onclick="celebrate()">LOVE U ❤️</button>
+      `;
     }
 
     function moveNo() {
